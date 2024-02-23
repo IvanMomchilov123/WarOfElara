@@ -11,15 +11,24 @@ using UnityEditor.UI;
 using UnityEngine.UI;
 using TMPro;
 
-public class LoginAndRegisterController : MonoBehaviour
+public class LoginAndRegisterModel : MonoBehaviour
 {
     public TMP_InputField loginNameInput;
     public TMP_InputField loginPasswordInput;
     public TMP_InputField registerNameInput;
     public TMP_InputField registerPasswordInput;
+    public RegisterView registerView;
 
     private string username;
     private string password;
+    private Dictionary<string, string> errorMessages = new Dictionary<string, string>()
+    {
+        {"wrongNameLength",  "Username must be between 3 and 20 characters." },
+        {"wrongPasswordLength", "Password must be between 8 and 30 characteers." },
+        {"wrongNameChars",  "Username can only contain the symbols '.', '-', '_', '@'." },
+        {"wrongPasswordChars", "Password must have at least one lowercase and one uppercase letter, one symbol and one number" },
+        {"userExists", "A user with the same name already exists." }
+    };
 
     public string Username 
     { 
@@ -27,7 +36,10 @@ public class LoginAndRegisterController : MonoBehaviour
         set 
         {
             if (value.Length < 3 || value.Length > 20)
-                this.username = "";
+            {
+                this.username = null;
+                return;
+            }
 
             this.username = value;
         }
@@ -39,7 +51,10 @@ public class LoginAndRegisterController : MonoBehaviour
         set
         {
             if (value.Length < 8 || value.Length > 30)
-                this.password = "";
+            {
+                this.password = null;
+                return;
+            }
 
             this.password = value;
         }
@@ -58,7 +73,7 @@ public class LoginAndRegisterController : MonoBehaviour
     }
 
 
-    private void SetValues(bool isRegistering)
+    private bool SetValues(bool isRegistering)
     {
         if (isRegistering)
         {
@@ -70,37 +85,51 @@ public class LoginAndRegisterController : MonoBehaviour
             this.Username = loginNameInput.text;
             this.Password = loginPasswordInput.text;
         }
+
+        if (this.Username == null)
+        {
+            registerView.DisplayMessage(this.errorMessages["wrongNameLength"]);
+            return false;
+        }
+        else if (this.Password == null)
+        {
+            registerView.DisplayMessage(this.errorMessages["wrongPasswordLength"]);
+            return false;
+        }
+        else
+        {
+            return true;
+        }
     }
 
     public async void Register()
     {
-        SetValues(true);
-        await SignUpWithUsernamePassword(this.Username, this.Password);
+        if (SetValues(true))
+            await SignUpWithUsernamePassword(this.Username, this.Password);
     }
 
     public async void Login()
     {
-        SetValues(false);
-        await SignInWithUsernamePasswordAsync(this.Username, this.Password);
+        if (SetValues(false))
+            await SignInWithUsernamePasswordAsync(this.Username, this.Password);
     }
 
     private async Task SignUpWithUsernamePassword(string username, string password)
     {
         try
         {
-            await AuthenticationService.Instance.SignUpWithUsernamePasswordAsync(username, password);
+            await AuthenticationService.Instance.SignUpWithUsernamePasswordAsync(username, password); 
+            registerView.FadeOutRegisterScreen();
             Debug.Log("SignUp is successful.");
         }
         catch (Unity.Services.Authentication.AuthenticationException ex)
         {
-            // Compare error code to AuthenticationErrorCodes
-            // Notify the player with the proper error message
+            registerView.DisplayMessage(this.errorMessages["userExists"]);
             Debug.LogException(ex);
         }
         catch (RequestFailedException ex)
         {
-            // Compare error code to CommonErrorCodes
-            // Notify the player with the proper error message
+            registerView.DisplayMessages(this.errorMessages["wrongNameChars"], this.errorMessages["wrongPasswordChars"]);
             Debug.LogException(ex);
         }
     }
