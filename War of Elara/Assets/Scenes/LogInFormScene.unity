@@ -1873,7 +1873,7 @@ GameObject:
   - component: {fileID: 888092259}
   - component: {fileID: 888092258}
   m_Layer: 0
-  m_Name: AudioSource
+  m_Name: ButtonClickSoundAudioSource
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2967,6 +2967,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1641509307}
+  - component: {fileID: 1641509308}
+  - component: {fileID: 1641509309}
   m_Layer: 0
   m_Name: LoginAndRegisterController
   m_TagString: Untagged
@@ -2989,6 +2991,31 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1641509308
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1641509306}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 23cc1e627c3f08e408a73f4a6deba7e9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  databaseConnection: {fileID: 1641509309}
+--- !u!114 &1641509309
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1641509306}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3e2c7e1920a4815438016a50f35123bf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1646195824
 GameObject:
   m_ObjectHideFlags: 0
