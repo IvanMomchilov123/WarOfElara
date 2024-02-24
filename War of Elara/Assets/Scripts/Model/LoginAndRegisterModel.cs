@@ -10,6 +10,7 @@ using Unity.Services.Authentication;
 using UnityEditor.UI;
 using UnityEngine.UI;
 using TMPro;
+using UnityEditorInternal;
 
 public class LoginAndRegisterModel : MonoBehaviour
 {
@@ -18,6 +19,7 @@ public class LoginAndRegisterModel : MonoBehaviour
     public TMP_InputField registerNameInput;
     public TMP_InputField registerPasswordInput;
     public RegisterView registerView;
+    public LoginView loginView;
 
     private string username;
     private string password;
@@ -27,7 +29,8 @@ public class LoginAndRegisterModel : MonoBehaviour
         {"wrongPasswordLength", "Password must be between 8 and 30 characteers." },
         {"wrongNameChars",  "Username can only contain the symbols '.', '-', '_', '@'." },
         {"wrongPasswordChars", "Password must have at least one lowercase and one uppercase letter, one symbol and one number" },
-        {"userExists", "A user with the same name already exists." }
+        {"userExists", "A user with the same name already exists." },
+        {"invalidCredentials", "Invalid username or password." }
     };
 
     public string Username 
@@ -79,27 +82,30 @@ public class LoginAndRegisterModel : MonoBehaviour
         {
             this.Username = registerNameInput.text;
             this.Password = registerPasswordInput.text;
+
+            if (this.Username == null)
+            {
+                registerView.DisplayMessage(this.errorMessages["wrongNameLength"]);
+                return false;
+            }
+            else if (this.Password == null)
+            {
+                registerView.DisplayMessage(this.errorMessages["wrongPasswordLength"]);
+                return false;
+            }
+            else
+            {
+                return true;
+            }
         }
         else
         {
             this.Username = loginNameInput.text;
             this.Password = loginPasswordInput.text;
-        }
-
-        if (this.Username == null)
-        {
-            registerView.DisplayMessage(this.errorMessages["wrongNameLength"]);
-            return false;
-        }
-        else if (this.Password == null)
-        {
-            registerView.DisplayMessage(this.errorMessages["wrongPasswordLength"]);
-            return false;
-        }
-        else
-        {
             return true;
         }
+
+        
     }
 
     public async void Register()
@@ -119,7 +125,7 @@ public class LoginAndRegisterModel : MonoBehaviour
         try
         {
             await AuthenticationService.Instance.SignUpWithUsernamePasswordAsync(username, password); 
-            registerView.FadeOutRegisterScreen();
+            GameManager.instance.UpdateGameState(GameManager.GameState.MainMenu);
             Debug.Log("SignUp is successful.");
         }
         catch (Unity.Services.Authentication.AuthenticationException ex)
@@ -139,18 +145,17 @@ public class LoginAndRegisterModel : MonoBehaviour
         try
         {
             await AuthenticationService.Instance.SignInWithUsernamePasswordAsync(username, password);
+            GameManager.instance.UpdateGameState(GameManager.GameState.MainMenu);
             Debug.Log("SignIn is successful.");
         }
         catch (Unity.Services.Authentication.AuthenticationException ex)
         {
-            // Compare error code to AuthenticationErrorCodes
-            // Notify the player with the proper error message
+            loginView.DisplayMessage(this.errorMessages["invalidCredentials"]);
             Debug.LogException(ex);
         }
         catch (RequestFailedException ex)
         {
-            // Compare error code to CommonErrorCodes
-            // Notify the player with the proper error message
+            loginView.DisplayMessage(this.errorMessages["invalidCredentials"]);
             Debug.LogException(ex);
         }
     }

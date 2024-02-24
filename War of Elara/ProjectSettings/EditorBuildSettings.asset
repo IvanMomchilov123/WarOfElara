@@ -8,4 +8,10 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/LogInFormScene.unity
     guid: bb125cddf0a52754a903cd5586ac1576
+  - enabled: 1
+    path: Assets/Scenes/MainMenuScene.unity
+    guid: 30493abc596773d48b096821ea8cf698
+  - enabled: 1
+    path: Assets/Scenes/GameScene.unity
+    guid: 9fc0d4010bbf28b4594072e72b8655ab
   m_configObjects: {}

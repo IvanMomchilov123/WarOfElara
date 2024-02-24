@@ -1,8 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
-using UnityEditor.VersionControl;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class RegisterView : MonoBehaviour
 {
@@ -12,9 +10,8 @@ public class RegisterView : MonoBehaviour
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.Escape))
-        {
-            FadeOutRegisterScreen();
-        }
+            if (GetComponentInChildren<Image>().color.a == 1)
+                FadeOutRegisterScreen();
     }
 
     public void DisplayMessage(string message)
