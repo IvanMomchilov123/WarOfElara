@@ -9,6 +9,7 @@ public class GameManager : MonoBehaviour
     public static GameManager instance;
     public GameState state;
     public GameObject sceneFader;
+    public GameObject musicPlayer;
 
     private void Awake()
     {
@@ -18,6 +19,7 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         DontDestroyOnLoad(sceneFader);
+        DontDestroyOnLoad(musicPlayer);
         DontDestroyOnLoad(gameObject);
         UpdateGameState(GameState.Login);
     }

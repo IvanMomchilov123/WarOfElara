@@ -1,16 +1,10 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Security.Authentication;
 using System.Threading.Tasks;
-using Unity.VisualScripting;
 using UnityEngine;
 using Unity.Services.Core;
 using Unity.Services.Authentication;
-using UnityEditor.UI;
-using UnityEngine.UI;
 using TMPro;
-using UnityEditorInternal;
 
 public class LoginAndRegisterModel : MonoBehaviour
 {
