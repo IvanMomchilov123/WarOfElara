@@ -76,7 +76,7 @@ public class LoginAndRegisterModel : MonoBehaviour
     }
 
 
-    private bool SetValues(bool isRegistering)
+    public bool SetValues(bool isRegistering)
     {
         if (isRegistering)
         {

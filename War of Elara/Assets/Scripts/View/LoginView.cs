@@ -19,7 +19,7 @@ public class LoginView : MonoBehaviour
         messageText.text = message;
     }
 
-    private void ClearMessage()
+    public void ClearMessage()
     {
         messageText.text = "";
     }

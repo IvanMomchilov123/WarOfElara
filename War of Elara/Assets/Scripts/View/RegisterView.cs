@@ -26,7 +26,7 @@ public class RegisterView : MonoBehaviour
         messageText2.text = message2;
     }
 
-    private void ClearMessages()
+    public void ClearMessages()
     {
         messageText.text = "";
         messageText2.text = "";
